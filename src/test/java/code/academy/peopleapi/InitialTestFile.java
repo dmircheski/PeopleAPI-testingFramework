@@ -12,13 +12,19 @@ public class InitialTestFile {
 
     PeopleApiClient peopleApiClient = new PeopleApiClient();
     HttpResponse response;
+    HttpResponse getPeople;
+    HttpResponse getOnePerson;
 
     @Test
     public void initialTest() throws Exception {
         // nekakov REQUEST do PEOPLE API
         response = peopleApiClient.getWelcomeRequest();
+        getPeople = peopleApiClient.getAllPeople();
+        getOnePerson = peopleApiClient.getOnePerson();
 
         String body = EntityUtils.toString(response.getEntity());
+        String bodyAllPeople = EntityUtils.toString(getPeople.getEntity());
+        String bodyOfOnePerson = EntityUtils.toString(getOnePerson.getEntity());
 
         // People API mi vrakja nekakov response
 
