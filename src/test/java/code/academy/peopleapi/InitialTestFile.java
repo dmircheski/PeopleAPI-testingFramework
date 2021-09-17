@@ -2,18 +2,29 @@ package code.academy.peopleapi;
 
 
 import code.academy.client.PeopleApiClient;
+import code.academy.model.requests.PostNewPersonRequest;
+import code.academy.model.responses.PostNewPersonResponse;
+import code.academy.payloads.PostNewPersonPayload;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import static code.academy.utils.ConversionUtils.*;
+import static org.apache.http.HttpStatus.SC_CREATED;
+import static org.apache.http.HttpStatus.SC_OK;
 
 
 public class InitialTestFile {
 
     PeopleApiClient peopleApiClient = new PeopleApiClient();
     HttpResponse response;
+    PostNewPersonPayload postNewPersonPayload = new PostNewPersonPayload();
+    PostNewPersonRequest postNewPersonRequest = new PostNewPersonRequest();
+
+    public InitialTestFile() throws Exception {
+    }
 
 
     @Test
@@ -69,28 +80,67 @@ public class InitialTestFile {
         payloadAsObject.put("isEmployed", true);
         payloadAsObject.put("location", "Skopje");
 
-        response = peopleApiClient.httpPost("https://people-api1.herokuapp.com/api/person", payloadAsObject);
+//        response = peopleApiClient.httpPost("https://people-api1.herokuapp.com/api/person", payloadAsObject);
         String body = EntityUtils.toString(response.getEntity());
     }
 
     @Test
     public void postPersonTestWithoutName() throws Exception {
-        JSONObject payloadAsObject = new JSONObject();
-        payloadAsObject.put("surname", "Blazevski");
-        payloadAsObject.put("age", 56);
-        payloadAsObject.put("isEmployed", true);
-        payloadAsObject.put("location", "Skopje");
+        postNewPersonRequest = postNewPersonPayload.createNewpersonPayload();
 
-        response = peopleApiClient.httpPost("https://people-api1.herokuapp.com/api/person", payloadAsObject);
+        String newPersonPayloadAsString = objectToJsonString(postNewPersonRequest);
+
+        response = peopleApiClient.httpPost("https://people-api1.herokuapp.com/api/person", newPersonPayloadAsString);
+        PostNewPersonResponse postNewPersonResponse;
+
         String body = EntityUtils.toString(response.getEntity());
+
+        postNewPersonResponse = jsonStringToObject(body, PostNewPersonResponse.class);
+
+        Assert.assertEquals(response.getStatusLine().getStatusCode(), SC_CREATED);
+        Assert.assertEquals(postNewPersonResponse.getCode(), "P200");
+        Assert.assertEquals(postNewPersonResponse.getPersonData().getName(), "Vlado");
     }
 
-    @Test public void updatePersonLocationTest() throws Exception {
+    @Test
+    public void updatePersonLocationTest() throws Exception {
         JSONObject payloadAsObject = new JSONObject();
         payloadAsObject.put("location", "Bitola");
 
+        String payloadAsString = payloadAsObject.toString();
+
         response = peopleApiClient.httpPut("https://people-api1.herokuapp.com/api/person/612ba20357744c30dc7e6fe7",
-                payloadAsObject);
+                payloadAsString);
+
+        String body = EntityUtils.toString(response.getEntity());
+    }
+
+    @Test
+    public void deletePersonTest() throws Exception {
+
+
+        // @ TestNG annotations
+
+        // @ TestNG annotations
+
+        // @ TestNG annotations
+
+        // @ TestNG annotations
+
+        // @ TestNG annotations
+
+        // @ TestNG annotations
+
+        // @ TestNG annotations
+        HttpResponse postResponse = peopleApiClient.httpPost("https://people-api1.herokuapp.com/api/person",
+                objectToJsonString(postNewPersonPayload.createNewpersonPayload()));
+
+        String postResponseBodyAsString = EntityUtils.toString(postResponse.getEntity());
+        PostNewPersonResponse postNewPersonResponse = jsonStringToObject(postResponseBodyAsString, PostNewPersonResponse.class);
+
+        String createdPersonId = postNewPersonResponse.getPersonData().getId();
+
+        response = peopleApiClient.httpDelete("https://people-api1.herokuapp.com/api/person/" + createdPersonId);
 
         String body = EntityUtils.toString(response.getEntity());
     }
