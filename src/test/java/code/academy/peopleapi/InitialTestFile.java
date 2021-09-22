@@ -115,33 +115,5 @@ public class InitialTestFile {
         String body = EntityUtils.toString(response.getEntity());
     }
 
-    @Test
-    public void deletePersonTest() throws Exception {
 
-
-        // @ TestNG annotations
-
-        // @ TestNG annotations
-
-        // @ TestNG annotations
-
-        // @ TestNG annotations
-
-        // @ TestNG annotations
-
-        // @ TestNG annotations
-
-        // @ TestNG annotations
-        HttpResponse postResponse = peopleApiClient.httpPost("https://people-api1.herokuapp.com/api/person",
-                objectToJsonString(postNewPersonPayload.createNewpersonPayload()));
-
-        String postResponseBodyAsString = EntityUtils.toString(postResponse.getEntity());
-        PostNewPersonResponse postNewPersonResponse = jsonStringToObject(postResponseBodyAsString, PostNewPersonResponse.class);
-
-        String createdPersonId = postNewPersonResponse.getPersonData().getId();
-
-        response = peopleApiClient.httpDelete("https://people-api1.herokuapp.com/api/person/" + createdPersonId);
-
-        String body = EntityUtils.toString(response.getEntity());
-    }
 }
