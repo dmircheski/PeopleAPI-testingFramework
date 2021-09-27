@@ -28,7 +28,7 @@ public class DeletePersonFeatureTest {
     @BeforeClass
     public void beforeClass() throws Exception {
         HttpResponse postResponse = peopleApiClient.httpPost("https://people-api1.herokuapp.com/api/person",
-                objectToJsonString(postNewPersonPayload.createNewpersonPayload()));
+                objectToJsonString(postNewPersonPayload.createNewPersonPayload()));
 
         String postResponseBodyAsString = EntityUtils.toString(postResponse.getEntity());
         PostNewPersonResponse postNewPersonResponse = jsonStringToObject(postResponseBodyAsString, PostNewPersonResponse.class);
@@ -44,8 +44,9 @@ public class DeletePersonFeatureTest {
 
     @Test
     public void deletePersonTest() throws Exception {
-        response = peopleApiClient.httpDelete("https://people-api1.herokuapp.com/api/person/" + createdPersonId);
-        String body = EntityUtils.toString(response.getEntity());
+//        String personOneId = get.("id")
+//        response = peopleApiClient.httpDelete("https://people-api1.herokuapp.com/api/person/" + createdPersonId);
+//        String body = EntityUtils.toString(response.getEntity());
 
 
     }

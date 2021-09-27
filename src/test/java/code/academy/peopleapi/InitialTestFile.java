@@ -69,6 +69,7 @@ public class InitialTestFile {
         String body = EntityUtils.toString(response.getEntity());
         JSONObject bodyAsObject = new JSONObject(body);
         String messageAsString = bodyAsObject.get("message").toString();
+//        Person validation failed: isEmployed:
     }
 
     @Test
@@ -84,23 +85,6 @@ public class InitialTestFile {
         String body = EntityUtils.toString(response.getEntity());
     }
 
-    @Test
-    public void postPersonTestWithoutName() throws Exception {
-        postNewPersonRequest = postNewPersonPayload.createNewpersonPayload();
-
-        String newPersonPayloadAsString = objectToJsonString(postNewPersonRequest);
-
-        response = peopleApiClient.httpPost("https://people-api1.herokuapp.com/api/person", newPersonPayloadAsString);
-        PostNewPersonResponse postNewPersonResponse;
-
-        String body = EntityUtils.toString(response.getEntity());
-
-        postNewPersonResponse = jsonStringToObject(body, PostNewPersonResponse.class);
-
-        Assert.assertEquals(response.getStatusLine().getStatusCode(), SC_CREATED);
-        Assert.assertEquals(postNewPersonResponse.getCode(), "P200");
-        Assert.assertEquals(postNewPersonResponse.getPersonData().getName(), "Vlado");
-    }
 
     @Test
     public void updatePersonLocationTest() throws Exception {
