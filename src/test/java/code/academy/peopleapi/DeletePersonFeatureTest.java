@@ -1,5 +1,6 @@
 package code.academy.peopleapi;
 
+import code.academy.base.TestBase;
 import code.academy.client.PeopleApiClient;
 import code.academy.model.requests.PostNewPersonRequest;
 import code.academy.model.responses.PostNewPersonResponse;
@@ -13,13 +14,12 @@ import java.io.IOException;
 import static code.academy.utils.ConversionUtils.jsonStringToObject;
 import static code.academy.utils.ConversionUtils.objectToJsonString;
 
-public class DeletePersonFeatureTest {
+public class DeletePersonFeatureTest extends TestBase {
 
     public DeletePersonFeatureTest() throws Exception {
     }
 
 
-    PeopleApiClient peopleApiClient = new PeopleApiClient();
     HttpResponse response;
     PostNewPersonPayload postNewPersonPayload = new PostNewPersonPayload();
     PostNewPersonRequest postNewPersonRequest = new PostNewPersonRequest();

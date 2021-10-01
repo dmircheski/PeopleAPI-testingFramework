@@ -1,9 +1,7 @@
 package code.academy.peopleapi;
 
-import code.academy.client.PeopleApiClient;
-import code.academy.model.requests.PostNewPersonRequest;
+import code.academy.base.TestBase;
 import code.academy.model.responses.PostNewPersonResponse;
-import code.academy.payloads.PostNewPersonPayload;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
@@ -14,16 +12,16 @@ import org.testng.annotations.Test;
 import static code.academy.utils.ConversionUtils.jsonStringToObject;
 import static code.academy.utils.ConversionUtils.objectToJsonString;
 import static org.apache.http.HttpStatus.*;
+import static code.academy.config.HostNameConfig.*;
+import static code.academy.config.EndPointConfig.*;
+import static code.academy.utils.TestDataUtils.ResponseCode.*;
 
-public class PostNewPersonTest {
+public class PostNewPersonTest extends TestBase {
 
     public PostNewPersonTest() throws Exception {
     }
 
-    PostNewPersonRequest postNewPersonRequest = new PostNewPersonRequest();
-    PostNewPersonPayload postNewPersonPayload = new PostNewPersonPayload();
-    HttpResponse response;
-    PeopleApiClient peopleApiClient = new PeopleApiClient();
+
     PostNewPersonResponse postNewPersonResponse;
     String personOneId;
     String personTwoId;
@@ -35,14 +33,14 @@ public class PostNewPersonTest {
 
         String newPersonPayloadAsString = objectToJsonString(postNewPersonRequest);
 
-        response = peopleApiClient.httpPost("https://people-api1.herokuapp.com/api/person", newPersonPayloadAsString);
+        response = peopleApiClient.httpPost(HOSTNAME + POST_ENDPOINT, newPersonPayloadAsString);
 
         String body = EntityUtils.toString(response.getEntity());
 
         postNewPersonResponse = jsonStringToObject(body, PostNewPersonResponse.class);
 
         Assert.assertEquals(response.getStatusLine().getStatusCode(), SC_CREATED);
-        Assert.assertEquals(postNewPersonResponse.getCode(), "P201");
+        Assert.assertEquals(postNewPersonResponse.getCode(), P201);
         Assert.assertEquals(postNewPersonResponse.getMessage(), "Person succesfully inserted");
 
         Assert.assertEquals(postNewPersonResponse.getPersonData().getName(), postNewPersonRequest.getName());
@@ -71,7 +69,7 @@ public class PostNewPersonTest {
         postNewPersonResponse = jsonStringToObject(body, PostNewPersonResponse.class);
 
         Assert.assertEquals(response.getStatusLine().getStatusCode(), SC_CREATED);
-        Assert.assertEquals(postNewPersonResponse.getCode(), "P201");
+        Assert.assertEquals(postNewPersonResponse.getCode(), P201);
         Assert.assertEquals(postNewPersonResponse.getMessage(), "Person succesfully inserted");
 
         Assert.assertNull(postNewPersonResponse.getPersonData().getAge());

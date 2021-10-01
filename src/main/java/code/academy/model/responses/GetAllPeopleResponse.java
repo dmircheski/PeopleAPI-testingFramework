@@ -12,15 +12,12 @@ import java.util.List;
 
 @AllArgsConstructor
 @Data
-@Builder
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @SuppressWarnings("unused")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GetAllPeopleResponse {
+public class GetAllPeopleResponse extends DefaultPeopleResponse {
 
-    private String code;
-    private String message;
     private int numberOfPeople;
     private List<PersonData> peopleData;
 }
